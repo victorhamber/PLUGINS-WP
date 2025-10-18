@@ -1,0 +1,199 @@
+{
+  "meta": {
+    "project": "Plataforma de Plugins WordPress - Marketplace, Assinaturas e Afiliados",
+    "date": "2025-10-17",
+    "prepared_by": "Software Development Manager"
+  },
+  "product_overview": "Plataforma full-stack para comercialização, gerenciamento e distribuição de plugins WordPress, integrando marketplace, sistema de assinaturas e licenças, programa de afiliados multi-nível, analytics avançado e administração robusta, com forte foco em segurança, compliance e experiência de usuário.",
+  "core_goals": [
+    "Comercializar plugins WordPress com múltiplos planos de assinatura (mensal, anual e vitalício).",
+    "Gerenciar eficientemente assinaturas, licenças e downloads com controles de domínio e validação.",
+    "Maximizar receita via cupons, promoções e análises de pricing.",
+    "Atrair, gerenciar e pagar afiliados com métricas detalhadas e payout escalável.",
+    "Oferecer dashboards, relatórios e alertas personalizados para usuários e administradores.",
+    "Garantir segurança, auditoria, conformidade regulatória e prevenção antifraude.",
+    "Fornecer notificações em tempo real e integração com múltiplos provedores de pagamento."
+  ],
+  "key_features": [
+    "Marketplace completo com vitrines, páginas de detalhe e checkout integrado.",
+    "Sistema de assinaturas com geração automática de licenças e gestão de status (ativo, expirado, cancelado).",
+    "Controle de downloads vinculado a assinaturas e licenças ativas.",
+    "Área do usuário para gerenciamento de assinaturas, licenças e histórico de downloads.",
+    "Área administrativa para gestão de plugins, usuários, cupons, provedores de pagamento, alertas e relatórios.",
+    "Programa de afiliados multi-nível com tracking, gestão de comissões, links de referência e payouts diversos (PayPal, bancário, cripto).",
+    "Gerenciamento e upload de plugins e imagens via interface admin robusta.",
+    "Sistema integrado de analytics, reports e alertas configuráveis com compartilhabilidade.",
+    "Segurança reforçada com rate limiting, proteção CSRF, auditoria e regras antifraude dinâmicas.",
+    "Notificações em tempo real via WebSocket para métricas, eventos e alertas."
+  ],
+  "user_flow_summary": [
+    "Visitante navega pela loja e visualiza detalhes de plugins.",
+    "Usuário realiza cadastro/login e pode comprar assinaturas de plugins via checkout.",
+    "Após compra, usuário recebe licenças e liberações para download de plugins.",
+    "Afiliado cria links de referência, promove plugins, acompanhando cliques, conversões e comissões.",
+    "Admin gerencia catálogo de plugins, usuários, cupons e configurações do sistema.",
+    "Admin realiza uploads de plugins e imagens, configura provedores de pagamento e visualiza relatórios e alertas.",
+    "Usuário e admin recebem notificações em tempo real sobre eventos relevantes e status do sistema."
+  ],
+  "validation_criteria": [
+    "Funcionalidade completa dos endpoints REST para plugins, assinaturas, licenças, downloads, admin, afiliados e pagamentos.",
+    "Validação robusta server-side usando Zod para todas as entradas críticas.",
+    "Upload de arquivos e imagens funcionando com preservação de estado e URLs acessíveis.",
+    "Autenticação e autorização funcionando com proteção especial para rotas administrativas.",
+    "Controle correto de status e permissões para licenças, assinaturas, downloads e acessos.",
+    "Sistema de afiliados com rastreamento, cálculo de comissão e payout conforme regras definidas.",
+    "Segurança implementada com rate limiting, CSRF, auditoria e detecção antifraude efetivas.",
+    "Notificações em tempo real enviadas corretamente via WebSocket com dados atualizados.",
+    "Logs e monitoramento configurados para capturar erros, acessos e segurança.",
+    "Front-end completamente integrado com backend, exibindo dados consistentes e UI responsiva."
+  ],
+  "code_summary": {
+    "tech_stack": [
+      "TypeScript",
+      "React 18 (Vite)",
+      "Express 4",
+      "Vite 5",
+      "Drizzle ORM",
+      "PostgreSQL (Neon Serverless)",
+      "Stripe",
+      "TailwindCSS",
+      "Radix UI",
+      "Vitest",
+      "ESBuild",
+      "WS (WebSockets)",
+      "Wouter"
+    ],
+    "features": [
+      {
+        "name": "Frontend Bootstrapping",
+        "description": "Client app bootstrapped with Vite and React. Aliases to '@/', '@shared', and '@assets'.",
+        "files": [
+          "client/index.html",
+          "client/src/main.tsx",
+          "client/src/App.tsx",
+          "vite.config.ts",
+          "vitest.config.ts",
+          "tailwind.config.ts"
+        ]
+      },
+      {
+        "name": "Admin Plugins Management",
+        "description": "Admin interface to create, update, and delete plugins with image and ZIP uploads; robust dialog behavior and upload-state preservation.",
+        "files": [
+          "client/src/pages/AdminPlugins.tsx",
+          "client/src/pages/AdminPlugins.dialog.test.tsx",
+          "client/src/pages/AdminPlugins.test.tsx"
+        ]
+      },
+      {
+        "name": "Authentication",
+        "description": "Client auth context and hooks; server-side login/register/logout and user middleware with admin protection.",
+        "files": [
+          "client/src/hooks/useAuth.tsx",
+          "client/src/pages/AuthPage.tsx",
+          "client/src/test/AuthStatusTest.tsx",
+          "server/auth.ts"
+        ]
+      },
+      {
+        "name": "Server Routing & API",
+        "description": "Express server with REST routes for plugins, subscriptions, licenses, downloads, admin endpoints, and Stripe webhook handling.",
+        "files": [
+          "server/index.ts",
+          "server/routes.ts",
+          "server/paymentService.ts",
+          "server/upload.ts",
+          "server/uploadImage.ts",
+          "server/storage.ts",
+          "server/vite.ts"
+        ]
+      },
+      {
+        "name": "Shared Database Schema",
+        "description": "Drizzle ORM schema shared between server and client, including users, plugins, subscriptions, licenses, and other entities.",
+        "files": [
+          "shared/schema.ts"
+        ]
+      },
+      {
+        "name": "UI Components",
+        "description": "Reusable UI built on Radix UI primitives, including dialogs, alerts, drawers, sheets, tooltips, and more.",
+        "files": [
+          "client/src/components/ui/dialog.tsx",
+          "client/src/components/ui/alert-dialog.tsx",
+          "client/src/components/ui/drawer.tsx",
+          "client/src/components/ui/sheet.tsx",
+          "client/src/components/ui/tooltip.tsx",
+          "client/src/components/ui/collapsible.tsx",
+          "client/src/components/ui/button.tsx"
+        ]
+      },
+      {
+        "name": "Testing Setup",
+        "description": "Vitest configuration and global mocks for fetch/sessionStorage; tests for AdminPlugins dialog behavior and upload preservation.",
+        "files": [
+          "client/src/test/setup.ts",
+          "vitest.config.ts",
+          "client/src/pages/AdminPlugins.dialog.test.tsx",
+          "client/src/pages/AdminPlugins.test.tsx"
+        ]
+      },
+      {
+        "name": "Build & Deploy",
+        "description": "Build pipeline for client and server, Docker image, and deployment preparation scripts.",
+        "files": [
+          "Dockerfile",
+          "scripts/prepare-deploy.js",
+          "scripts/build-deploy.bat",
+          "scripts/build-deploy.sh",
+          "DEPLOY.md",
+          "replit.md"
+        ]
+      },
+      {
+        "name": "Uploads",
+        "description": "File system directories used for storing uploaded images and plugin ZIPs.",
+        "files": [
+          "uploads/images/",
+          "uploads/plugins/"
+        ]
+      },
+      {
+        "name": "Logging",
+        "description": "Application logs including access, combined, error, and security logs.",
+        "files": [
+          "logs/api-access.log",
+          "logs/combined.log",
+          "logs/error.log",
+          "logs/security.log"
+        ]
+      },
+      {
+        "name": "Database & Config",
+        "description": "Database configuration and connection, drizzle setup, and migrations.",
+        "files": [
+          "server/db.ts",
+          "drizzle.config.ts",
+          "migrations/"
+        ]
+      },
+      {
+        "name": "Environment Config",
+        "description": "Environment variables and examples for local development and production.",
+        "files": [
+          ".env",
+          ".env.example"
+        ]
+      },
+      {
+        "name": "Client Routing",
+        "description": "Client-side routing and app shell rendering; protected routes for admin pages.",
+        "files": [
+          "client/src/App.tsx",
+          "client/src/pages/AuthPage.tsx",
+          "client/src/pages/AdminPlugins.tsx"
+        ]
+      }
+    ]
+  }
+}

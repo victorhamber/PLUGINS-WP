@@ -1,0 +1,503 @@
+[
+  {
+    "id": "TC001",
+    "title": "User Registration with Valid Data",
+    "description": "Verify that a user can successfully register with valid input data including email, username, and password, and that the user receives a confirmation message.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the registration page"
+      },
+      {
+        "type": "action",
+        "description": "Input valid email, username, and password"
+      },
+      {
+        "type": "action",
+        "description": "Submit the registration form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify registration success message is shown and user is created in the database"
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "User Login with Correct Credentials",
+    "description": "Check login is successful when user provides correct email/username and password, and user session is correctly established.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to login page"
+      },
+      {
+        "type": "action",
+        "description": "Input valid username/email and correct password"
+      },
+      {
+        "type": "action",
+        "description": "Click login button"
+      },
+      {
+        "type": "assertion",
+        "description": "User is authenticated and redirected to the dashboard"
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "User Login with Invalid Credentials",
+    "description": "Verify login is rejected when user provides incorrect username/email or password with a proper error message.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to login page"
+      },
+      {
+        "type": "action",
+        "description": "Input incorrect username/email or password"
+      },
+      {
+        "type": "action",
+        "description": "Click login button"
+      },
+      {
+        "type": "assertion",
+        "description": "Login fails with an appropriate error message and no session is created"
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "Create Plugin as Admin with Image and ZIP Upload",
+    "description": "Verify admin can create a new plugin, upload images and ZIP files, and that uploads preserve their state during interactions.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login as admin user"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to Admin Plugins management page"
+      },
+      {
+        "type": "action",
+        "description": "Fill out plugin creation form with valid data"
+      },
+      {
+        "type": "action",
+        "description": "Upload plugin ZIP file and images"
+      },
+      {
+        "type": "action",
+        "description": "Submit plugin creation"
+      },
+      {
+        "type": "assertion",
+        "description": "Plugin is created successfully with image and ZIP accessible via URLs"
+      },
+      {
+        "type": "action",
+        "description": "Interact with dialog and verify upload state is maintained"
+      },
+      {
+        "type": "assertion",
+        "description": "Uploads remain intact and properly displayed after actions"
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "Subscription Purchase Flow with Checkout",
+    "description": "Verify user can buy plugin subscriptions using integrated checkout with monthly, annual, and lifetime option and payment succeeds.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login as registered user"
+      },
+      {
+        "type": "action",
+        "description": "Browse marketplace and select a plugin subscription"
+      },
+      {
+        "type": "action",
+        "description": "Select subscription plan (monthly, annual, or lifetime)"
+      },
+      {
+        "type": "action",
+        "description": "Proceed to checkout"
+      },
+      {
+        "type": "action",
+        "description": "Complete payment via integrated Stripe or other provider"
+      },
+      {
+        "type": "assertion",
+        "description": "Purchase is successful, subscription is created with correct status active"
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "License Generation and Activation Post Subscription Purchase",
+    "description": "Ensure license key is generated automatically after subscription purchase and license status is set to active.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Complete subscription purchase"
+      },
+      {
+        "type": "assertion",
+        "description": "License is generated and linked to the subscription"
+      },
+      {
+        "type": "assertion",
+        "description": "License has active status and is usable for downloads"
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "Download Control with Active License Validation",
+    "description": "Verify users can download plugin files only if they have an active license and downloads are restricted otherwise.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Log in as user with active license"
+      },
+      {
+        "type": "action",
+        "description": "Attempt to download the plugin file"
+      },
+      {
+        "type": "assertion",
+        "description": "Download starts successfully"
+      },
+      {
+        "type": "action",
+        "description": "Log in as user without license or with expired/canceled license"
+      },
+      {
+        "type": "action",
+        "description": "Attempt to download plugin"
+      },
+      {
+        "type": "assertion",
+        "description": "Download is denied with appropriate error message"
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "Admin Management of Coupons and Promotions",
+    "description": "Verify admin can create, update, and delete coupons, and discounts are correctly applied during checkout.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login as admin"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to coupon management section"
+      },
+      {
+        "type": "action",
+        "description": "Create a new coupon with specific discount and validity"
+      },
+      {
+        "type": "assertion",
+        "description": "Coupon is saved and visible in the list"
+      },
+      {
+        "type": "action",
+        "description": "Login as user"
+      },
+      {
+        "type": "action",
+        "description": "Apply coupon code during checkout"
+      },
+      {
+        "type": "assertion",
+        "description": "Discount is applied to the price correctly"
+      },
+      {
+        "type": "action",
+        "description": "Admin updates or deletes the coupon"
+      },
+      {
+        "type": "assertion",
+        "description": "Coupon changes reflect immediately in the system"
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "Affiliate Program Multi-Level Tracking and Payout Calculation",
+    "description": "Verify affiliate referrals, click tracking, commission calculations for multi-level affiliates, and that payouts via PayPal, bank, and crypto methods are processed.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Affiliate user generates referral link"
+      },
+      {
+        "type": "action",
+        "description": "Referral link is used by visitor to purchase plugin subscription"
+      },
+      {
+        "type": "assertion",
+        "description": "Clicks and conversions are tracked correctly in affiliate dashboard"
+      },
+      {
+        "type": "assertion",
+        "description": "Commission is correctly calculated per multi-level rules"
+      },
+      {
+        "type": "action",
+        "description": "Affiliate requests payout via PayPal, bank transfer or crypto"
+      },
+      {
+        "type": "assertion",
+        "description": "Payout is successfully processed and reflected in system"
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "Real-Time Notifications via WebSocket",
+    "description": "Verify that users and admins receive real-time notifications about metrics, events and alerts using the WebSocket connection with updated data.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Establish WebSocket connection as logged-in user"
+      },
+      {
+        "type": "action",
+        "description": "Trigger events like new purchase, plugin upload or alert creation in system"
+      },
+      {
+        "type": "assertion",
+        "description": "Relevant real-time notification is received promptly"
+      },
+      {
+        "type": "assertion",
+        "description": "Notification data content is accurate and complete"
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "Security: Rate Limiting and CSRF Protection on Critical Endpoints",
+    "description": "Ensure rate limiting is enforced on login, register, and purchase endpoints and CSRF tokens are validated correctly preventing unauthorized requests.",
+    "category": "security",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send rapid repeated requests to login and purchase endpoints exceeding rate limits"
+      },
+      {
+        "type": "assertion",
+        "description": "Server rejects excessive requests with appropriate HTTP status code (e.g., 429)"
+      },
+      {
+        "type": "action",
+        "description": "Attempt form submission without proper CSRF token on protected routes"
+      },
+      {
+        "type": "assertion",
+        "description": "Request is rejected and error is returned"
+      }
+    ]
+  },
+  {
+    "id": "TC012",
+    "title": "Audit Logs Capture Security and Access Events",
+    "description": "Verify that all login attempts, administrative actions, payments and security related events are logged appropriately in security and audit logs.",
+    "category": "security",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Perform login, logout, and admin plugin creation actions"
+      },
+      {
+        "type": "action",
+        "description": "Trigger payment processing and subscription purchases"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify logs capture these events with timestamps and relevant details"
+      }
+    ]
+  },
+  {
+    "id": "TC013",
+    "title": "Validation of All Critical Inputs Using Server-Side Schema",
+    "description": "Test that all critical endpoints validate inputs using Zod or equivalent schema validation preventing invalid or malformed data submission.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send requests with missing required fields"
+      },
+      {
+        "type": "assertion",
+        "description": "Server returns validation error with descriptive message"
+      },
+      {
+        "type": "action",
+        "description": "Send requests with invalid field formats such as invalid emails or unsupported file types"
+      },
+      {
+        "type": "assertion",
+        "description": "Server rejects requests with appropriate errors"
+      }
+    ]
+  },
+  {
+    "id": "TC014",
+    "title": "Access Control Enforcement for Admin Routes",
+    "description": "Verify that admin-only routes (plugin management, user management, coupon management) are accessible only to authenticated users with admin role.",
+    "category": "security",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Attempt to access admin endpoints without authentication"
+      },
+      {
+        "type": "assertion",
+        "description": "Access is denied with 401 Unauthorized or redirect to login"
+      },
+      {
+        "type": "action",
+        "description": "Login as regular user and attempt admin actions"
+      },
+      {
+        "type": "assertion",
+        "description": "Access is denied with 403 Forbidden"
+      },
+      {
+        "type": "action",
+        "description": "Login as admin and access admin routes"
+      },
+      {
+        "type": "assertion",
+        "description": "Access is granted successfully"
+      }
+    ]
+  },
+  {
+    "id": "TC015",
+    "title": "Analytics Dashboard and Reports Display Correct Data",
+    "description": "Verify that analytics, reports and alerts configured by admin display accurate and updated metrics that reflect real system data.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login as admin user"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to analytics and reports dashboard"
+      },
+      {
+        "type": "assertion",
+        "description": "Displayed metrics match data from subscriptions, sales, and affiliates"
+      },
+      {
+        "type": "action",
+        "description": "Configure new alert with threshold"
+      },
+      {
+        "type": "assertion",
+        "description": "Alert triggers when threshold breached and notification is sent"
+      }
+    ]
+  },
+  {
+    "id": "TC016",
+    "title": "Frontend and Backend Data Consistency and Responsiveness",
+    "description": "Check that front-end UI displays all data from backend accurately and updates in real-time where appropriate, with responsive layout across devices.",
+    "category": "ui",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login as user and browse marketplace, subscriptions, and download history"
+      },
+      {
+        "type": "assertion",
+        "description": "Displayed data matches backend database entries"
+      },
+      {
+        "type": "action",
+        "description": "Resize browser to mobile and tablet screen sizes"
+      },
+      {
+        "type": "assertion",
+        "description": "UI elements remain usable and well aligned"
+      },
+      {
+        "type": "action",
+        "description": "Perform data changes via admin interface"
+      },
+      {
+        "type": "assertion",
+        "description": "Changes propagate correctly to user views without stale data"
+      }
+    ]
+  },
+  {
+    "id": "TC017",
+    "title": "Expired and Cancelled Subscription and License Restrictions",
+    "description": "Validate that subscriptions and associated licenses marked as expired or cancelled do not allow downloads or access beyond allowed timeframes.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login as user with expired or cancelled subscription"
+      },
+      {
+        "type": "action",
+        "description": "Attempt to download plugin"
+      },
+      {
+        "type": "assertion",
+        "description": "Access is denied and the user is informed of subscription status"
+      },
+      {
+        "type": "action",
+        "description": "Attempt to access subscription-only features"
+      },
+      {
+        "type": "assertion",
+        "description": "Access is blocked appropriately"
+      }
+    ]
+  }
+]
