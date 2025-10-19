@@ -20,7 +20,7 @@ import Dashboard from "@/pages/Dashboard";
 import Subscriptions from "@/pages/Subscriptions";
 import Licenses from "@/pages/Licenses";
 import Downloads from "@/pages/Downloads";
-import AdminPlugins from "@/pages/admin/AdminPlugins";
+// import AdminPlugins from "@/pages/admin/AdminPlugins";
 
 import AdminUsers from "@/pages/admin/AdminUsers";
 import AdminSettings from "@/pages/admin/AdminSettings";
@@ -57,7 +57,7 @@ function Router() {
       <ProtectedRoute path="/licenses" component={Licenses} />
       <ProtectedRoute path="/downloads" component={Downloads} />
       <ProtectedRoute path="/admin/reports" component={() => <ErrorBoundary><AdminReports /></ErrorBoundary>} />
-      <ProtectedRoute path="/admin/plugins" component={() => <ErrorBoundary><AdminPlugins /></ErrorBoundary>} />
+      {/* <ProtectedRoute path="/admin/plugins" component={() => <ErrorBoundary><AdminPlugins /></ErrorBoundary>} /> */}
       
       <ProtectedRoute path="/admin/users" component={() => <ErrorBoundary><AdminUsers /></ErrorBoundary>} />
       <ProtectedRoute path="/admin/payment-providers" component={() => <ErrorBoundary><AdminPaymentProviders /></ErrorBoundary>} />

@@ -75,15 +75,14 @@ const toNumberOrUndefined = (s?: string) => {
   return Number.isFinite(n) ? n : undefined;
 };
 
-const generateSlug = (name: string) =>
-  name
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .trim();
+const generateSlug = (name: string) => {
+  const nfdNormalized = name.toLowerCase().normalize("NFD");
+  const withoutDiacritics = nfdNormalized.replace(/[\u0300-\u036f]/g, "");
+  const alphanumeric = withoutDiacritics.replace(/[^a-z0-9\s-]/g, "");
+  const withHyphens = alphanumeric.replace(/\s+/g, "-");
+  const cleaned = withHyphens.replace(/-+/g, "-");
+  return cleaned.trim();
+};
 
 /** Converte os valores do form para o payload do backend */
 const normalizePayload = (f: PluginForm): InsertPlugin => {
@@ -276,98 +275,95 @@ export default function AdminPlugins() {
     }
   };
 
-  // removido: input file-based upload (substituído por dropzone inline)
 
-  // removido: input image-based upload (substituído por dropzone inline)
+  // Upload image without input
+  const uploadImageFileDirect = async (file: File) => {
+    setIsImageUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append("image", file);
+      const response = await fetch("/api/admin/plugins/upload-image", {
+        method: "POST",
+        credentials: "include",
+        body: fd,
+      });
+      if (!response.ok) throw new Error("Image upload failed");
+      const result = await response.json();
+      setForm((prev) => ({ ...prev, imageUrl: result.imageUrl }));
+      toast({ title: "Sucesso", description: "Imagem enviada com sucesso!" });
+    } catch (error) {
+      console.error("Erro no upload de imagem:", error);
+      toast({
+        title: "Erro",
+        description: "Falha no upload da imagem",
+        variant: "destructive",
+      });
+    } finally {
+      setIsImageUploading(false);
+    }
+  };
 
-// Upload direto sem input para evitar popup (imagem)
-const uploadImageFileDirect = async (file: File) => {
-  setIsImageUploading(true);
-  try {
-    const fd = new FormData();
-    fd.append("image", file);
-    const response = await fetch("/api/admin/plugins/upload-image", {
-      method: "POST",
-      credentials: "include",
-      body: fd,
-    });
-    if (!response.ok) throw new Error("Image upload failed");
-    const result = await response.json();
-    setForm((prev) => ({ ...prev, imageUrl: result.imageUrl }));
-    toast({ title: "Sucesso", description: "Imagem enviada com sucesso!" });
-  } catch (error) {
-    console.error("Erro no upload de imagem:", error);
-    toast({
-      title: "Erro",
-      description: "Falha no upload da imagem",
-      variant: "destructive",
-    });
-  } finally {
-    setIsImageUploading(false);
-  }
-};
+  // Upload plugin file without input
+  const uploadPluginFileDirect = async (file: File) => {
+    setIsFileUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const response = await fetch("/api/admin/plugins/upload", {
+        method: "POST",
+        credentials: "include",
+        body: fd,
+      });
+      if (!response.ok) throw new Error("Upload failed");
+      const result = await response.json();
+      setForm((prev) => ({ ...prev, downloadUrl: result.downloadUrl }));
+      toast({ title: "Sucesso", description: "Arquivo enviado com sucesso!" });
+    } catch (error) {
+      console.error("Erro no upload de arquivo:", error);
+      toast({
+        title: "Erro",
+        description: "Falha no upload do arquivo",
+        variant: "destructive",
+      });
+    } finally {
+      setIsFileUploading(false);
+    }
+  };
 
-// Upload direto sem input para evitar popup (arquivo do plugin)
-const uploadPluginFileDirect = async (file: File) => {
-  setIsFileUploading(true);
-  try {
-    const fd = new FormData();
-    fd.append("file", file);
-    const response = await fetch("/api/admin/plugins/upload", {
-      method: "POST",
-      credentials: "include",
-      body: fd,
-    });
-    if (!response.ok) throw new Error("Upload failed");
-    const result = await response.json();
-    setForm((prev) => ({ ...prev, downloadUrl: result.downloadUrl }));
-    toast({ title: "Sucesso", description: "Arquivo enviado com sucesso!" });
-  } catch (error) {
-    console.error("Erro no upload de arquivo:", error);
-    toast({
-      title: "Erro",
-      description: "Falha no upload do arquivo",
-      variant: "destructive",
-    });
-  } finally {
-    setIsFileUploading(false);
-  }
-};
+  // Handlers de drop para imagem e arquivo
+  const onImageFileDrop = async (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDraggingImage(false);
+    const file = e.dataTransfer.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      toast({
+        title: "Formato inválido",
+        description: "Envie um arquivo de imagem",
+        variant: "destructive",
+      });
+      return;
+    }
+    await uploadImageFileDirect(file);
+  };
 
-// Handlers de drop para imagem e arquivo
-const onImageFileDrop = async (e: React.DragEvent<HTMLDivElement>) => {
-  e.preventDefault();
-  setIsDraggingImage(false);
-  const file = e.dataTransfer.files?.[0];
-  if (!file) return;
-  if (!file.type.startsWith("image/")) {
-    toast({
-      title: "Formato inválido",
-      description: "Envie um arquivo de imagem",
-      variant: "destructive",
-    });
-    return;
-  }
-  await uploadImageFileDirect(file);
-};
-
-const onPluginFileDrop = async (e: React.DragEvent<HTMLDivElement>) => {
-  e.preventDefault();
-  setIsDraggingFile(false);
-  const file = e.dataTransfer.files?.[0];
-  if (!file) return;
-  const allowed = [".zip", ".rar", ".tar", ".gz"];
-  const name = file.name.toLowerCase();
-  if (!allowed.some((ext) => name.endsWith(ext))) {
-    toast({
-      title: "Formato inválido",
-      description: "Envie .zip, .rar, .tar ou .gz",
-      variant: "destructive",
-    });
-    return;
-  }
-  await uploadPluginFileDirect(file);
-};
+  const onPluginFileDrop = async (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDraggingFile(false);
+    const file = e.dataTransfer.files?.[0];
+    if (!file) return;
+    const allowed = [".zip", ".rar", ".tar", ".gz"];
+    const name = file.name.toLowerCase();
+    if (!allowed.some((ext) => name.endsWith(ext))) {
+      toast({
+        title: "Formato inválido",
+        description: "Envie .zip, .rar, .tar ou .gz",
+        variant: "destructive",
+      });
+      return;
+    }
+    await uploadPluginFileDirect(file);
+  };
 
   /* --------------------------------- Render -------------------------------- */
 
